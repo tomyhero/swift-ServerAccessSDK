@@ -34,15 +34,16 @@ public class ClientBase {
     
     
     
-    public var endpoint: String = ""
     public let accessTokenKey : String = "X-ACCESS-TOKEN"
     
-    public init(){
-        //self.setupEndpoint()
+    public init(){}
+    
+
+    public func getAccessToken() -> String {
+        preconditionFailure("This method must be overridden")
     }
     
-    
-    public func setupEndpoint(){
+    public func getEndpoint() -> String {
         preconditionFailure("This method must be overridden")
         
     }
@@ -51,9 +52,6 @@ public class ClientBase {
         preconditionFailure("This method must be overridden")
     }
     
-    public func getAccessToken() -> String {
-        preconditionFailure("This method must be overridden")
-    }
     
     static func onDefaultError( e : ResponseAPIError ){
         println(e)
@@ -80,7 +78,7 @@ public class ClientBase {
         
         )  {
             
-            let url  = self.endpoint + command.path
+            let url  = self.getEndpoint() + command.path
             let mutableURLRequest = NSMutableURLRequest(URL : NSURL(string: url)!)
             
             mutableURLRequest.HTTPMethod = command.method
