@@ -20,7 +20,9 @@ public enum APIError : Int {
 }
 
 public class ResponseBase {
-    var json : JSON = []
+    public var json : JSON = []
+    
+    public init(){}
     
     public func load(json:JSON) ->Void {
         fatalError("abstract method")
@@ -39,9 +41,7 @@ public class ResponseAPIError : ResponseBase {
     
     public override func load(json:JSON) ->Void {
         self.json = json
-        println(json)
         self.apiError = APIError(rawValue :json["error"].intValue)!
-        
     }
     
     
