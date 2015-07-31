@@ -1,2 +1,6 @@
 Server Access SDK
 ================
+
+This class help you to access my style Server API.
+
+
