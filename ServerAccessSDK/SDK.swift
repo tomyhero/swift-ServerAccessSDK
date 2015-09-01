@@ -52,6 +52,11 @@ public class ClientBase {
         preconditionFailure("This method must be overridden")
     }
     
+    // overwrite this method when u want to use basic auth
+    public func getBasicAuthInfo()-> NSURLCredential? {
+        // let credential = NSURLCredential(user: user, password: password, persistence: persistence)
+        return nil
+    }
     
     static func onDefaultError( e : ResponseAPIError ){
         println(e)
@@ -91,7 +96,14 @@ public class ClientBase {
             let (m,error) = ParameterEncoding.URL.encode(mutableURLRequest,parameters:parameters)
 
             
-            Alamofire.request(m).responseSwiftyJSON({ (request, response, json, error) in
+            var requestObject = Alamofire.request(m)
+            let basicAuthInfo =  self.getBasicAuthInfo()
+            if basicAuthInfo != nil {
+                requestObject.authenticate( usingCredential: basicAuthInfo! )
+            }
+            
+            
+            requestObject.responseSwiftyJSON({ (request, response, json, error) in
                 if(error == nil ){
                     let apiError = APIError(rawValue :json["error"].intValue)
                     
