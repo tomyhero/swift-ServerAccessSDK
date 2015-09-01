@@ -12,7 +12,7 @@ import SwiftyJSON
 
 public class Command {
     
-    var path : String = ""
+    public var path : String = ""
     var method : String = ""
     
     
