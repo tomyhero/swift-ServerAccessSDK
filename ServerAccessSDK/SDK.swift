@@ -99,7 +99,7 @@ public class ClientBase {
             var requestObject = Alamofire.request(m)
             let basicAuthInfo =  self.getBasicAuthInfo()
             if basicAuthInfo != nil {
-                requestObject.authenticate( usingCredential: basicAuthInfo! )
+                requestObject = requestObject.authenticate( usingCredential: basicAuthInfo! )
             }
             
             
