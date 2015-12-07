@@ -14,6 +14,6 @@ s.ios.deployment_target = "8.0"
 
 
 s.dependency 'Alamofire', '~> 3.1.3'
-s.dependency 'SwiftyJSON', '~> 2.3.2'
+s.dependency 'SwiftyJSON', '~> 2.3.1'
 
 end
