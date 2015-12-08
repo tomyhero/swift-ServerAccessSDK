@@ -61,7 +61,7 @@ public class ClientBase {
     static func onDefaultError( e : ResponseAPIError ){
         print(e)
     }
-    static func onCriticalError( e : NSError ){
+    static func onCriticalError( e : ErrorType ){
         print(e)
     }
     
@@ -75,8 +75,8 @@ public class ClientBase {
             ( e : ResponseAPIError ) in
             ClientBase.onDefaultError(e)
         },
-        onCriticalError : ( NSError ) -> Void = {
-            ( e : NSError) in
+        onCriticalError : ( ErrorType ) -> Void = {
+            ( e : ErrorType) in
             ClientBase.onCriticalError(e)
         },
         onFinalize : () -> Void
@@ -87,21 +87,21 @@ public class ClientBase {
             let mutableURLRequest = NSMutableURLRequest(URL : NSURL(string: url)!)
             
             mutableURLRequest.HTTPMethod = command.method
+        
     
             if self.getAccessToken() != "" {
                 
                 mutableURLRequest.setValue(self.getAccessToken(), forHTTPHeaderField: self.accessTokenKey)
             }
             
-            let (m, _) = ParameterEncoding.URL.encode(mutableURLRequest,parameters:parameters)
+            let (m, _) = Alamofire.ParameterEncoding.URL.encode(mutableURLRequest,parameters:parameters)
 
-            
             var requestObject = Alamofire.request(m)
+            
             let basicAuthInfo =  self.getBasicAuthInfo()
             if basicAuthInfo != nil {
                 requestObject = requestObject.authenticate( usingCredential: basicAuthInfo! )
             }
-            
             requestObject.responseSwiftyJSON({ (request, response, json, error) in
                 if(error == nil ){
                     let apiError = APIError(rawValue :json["error"].intValue)
