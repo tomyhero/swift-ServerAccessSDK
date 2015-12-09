@@ -14,18 +14,13 @@ public class Command {
     
     public var path : String = ""
     var method : String = ""
+    var res : ResponseBase!
     
-    
-    public init(path:String){
-        self.path = path
-        self.method = Alamofire.Method.POST.rawValue
-    }
-    
-    public init(path:String,method:String){
+    public init(path : String,res : ResponseBase,method:String = Alamofire.Method.POST.rawValue ){
         self.path = path
         self.method = method
+        self.res = res
     }
-
     
 }
 
@@ -49,7 +44,9 @@ public class ClientBase {
     }
     
     public func responseMaker(cmd:Command,json:JSON) -> ResponseBase {
-        preconditionFailure("This method must be overridden")
+        let res:ResponseBase = cmd.res
+        res.load(json)
+        return res
     }
     
     // overwrite this method when u want to use basic auth
@@ -79,7 +76,7 @@ public class ClientBase {
             ( e : ErrorType) in
             ClientBase.onCriticalError(e)
         },
-        onFinalize : () -> Void
+        onFinalize : () -> Void = {()in}
         
         )  {
             
