@@ -56,7 +56,7 @@ public class ClientBase {
     }
     
     static func onDefaultError( e : ResponseAPIError ){
-        print(e)
+        print(e.json)
     }
     static func onCriticalError( e : ErrorType ){
         print(e)
