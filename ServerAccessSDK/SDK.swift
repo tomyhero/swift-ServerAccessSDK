@@ -65,7 +65,7 @@ public class ClientBase {
         return nil
     }
     
-    private func execGet(
+    public func execGet(
         command : Command,
         parameters: [String: AnyObject]? = nil,
         onSuccess : ( ResponseBase ) -> Void,
