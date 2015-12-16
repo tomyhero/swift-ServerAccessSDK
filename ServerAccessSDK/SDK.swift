@@ -65,19 +65,38 @@ public class ClientBase {
         return nil
     }
     
-    public func execGet(
+    public func get(
         command : Command,
         parameters: [String: AnyObject]? = nil,
         onSuccess : ( ResponseBase ) -> Void,
-        onCriticalError : ( ErrorType ) -> Void,
-        onError : ( ResponseAPIError ) -> Void ,
-        onMaintenance : ( ResponseAPIError ) -> Void,
-        onUpgradeClient : ( ResponseAPIError ) -> Void,
-        onUpgradeData : ( ResponseAPIError ) -> Void,
-        onFinalize : () -> Void
+        onCriticalError : ( ErrorType ) -> Void = {
+            ( e : ErrorType) in
+            print("onCriticalError")
+            print(e)
+        },
+        onError : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onError")
+            print(e.json)
+        },
+        onMaintenance : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onMaintenance")
+            print(e.json)
+        },
+        onUpgradeClient : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onUpgradeClient")
+            print(e.json)
+        },
+        onUpgradeData : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onUpgradeData")
+            print(e.json)
+        },
+        onFinalize : () -> Void = {()in}
         
-        ){
-            
+        )  {
             let url  = self.getEndpoint() + command.path
             let mutableURLRequest = NSMutableURLRequest(URL : NSURL(string: url)!)
             
@@ -135,41 +154,6 @@ public class ClientBase {
             })
             
 
-    }
-    
-    public func get(
-        command : Command,
-        parameters: [String: AnyObject]? = nil,
-        onSuccess : ( ResponseBase ) -> Void,
-        onCriticalError : ( ErrorType ) -> Void = {
-            ( e : ErrorType) in
-            print("onCriticalError")
-            print(e)
-        },
-        onError : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            print("onError")
-            print(e.json)
-        },
-        onMaintenance : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            print("onMaintenance")
-            print(e.json)
-        },
-        onUpgradeClient : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            print("onUpgradeClient")
-            print(e.json)
-        },
-        onUpgradeData : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            print("onUpgradeData")
-            print(e.json)
-        },
-        onFinalize : () -> Void = {()in}
-        
-        )  {
-            self.execGet(command,parameters:parameters,onSuccess:onSuccess,onCriticalError:onCriticalError,onError:onError,onMaintenance:onMaintenance,onUpgradeClient:onUpgradeClient,onUpgradeData:onUpgradeData,onFinalize:onFinalize)
             
     }
     
