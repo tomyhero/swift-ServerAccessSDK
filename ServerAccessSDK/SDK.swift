@@ -65,58 +65,25 @@ public class ClientBase {
         return nil
     }
     
-    static func cbError( e : ResponseAPIError ){
-        print(e.json)
-    }
-    static func cbCriticalError( e : ErrorType ){
-        print(e)
-    }
-    
-    static func cbMaintenance( e : ResponseAPIError ){
-        print(e.json)
-    }
-    static func cbUpgradeClient( e : ResponseAPIError ){
-        print(e.json)
-    }
-    static func cbUpgradeData( e : ResponseAPIError ){
-        print(e.json)
-    }
-    
-    
-    public func get(
+    private func execGet(
         command : Command,
         parameters: [String: AnyObject]? = nil,
         onSuccess : ( ResponseBase ) -> Void,
-        onError : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            ClientBase.cbError(e)
-        },
-        onCriticalError : ( ErrorType ) -> Void = {
-            ( e : ErrorType) in
-            ClientBase.cbCriticalError(e)
-        },
-        onMaintenance : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            ClientBase.cbMaintenance(e)
-        },
-        onUpgradeClient : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            ClientBase.cbUpgradeClient(e)
-        },
-        onUpgradeData : ( ResponseAPIError ) -> Void = {
-            ( e : ResponseAPIError ) in
-            ClientBase.cbUpgradeData(e)
-        },
-        onFinalize : () -> Void = {()in}
+        onCriticalError : ( ErrorType ) -> Void,
+        onError : ( ResponseAPIError ) -> Void ,
+        onMaintenance : ( ResponseAPIError ) -> Void,
+        onUpgradeClient : ( ResponseAPIError ) -> Void,
+        onUpgradeData : ( ResponseAPIError ) -> Void,
+        onFinalize : () -> Void
         
-        )  {
+        ){
             
             let url  = self.getEndpoint() + command.path
             let mutableURLRequest = NSMutableURLRequest(URL : NSURL(string: url)!)
             
             mutableURLRequest.HTTPMethod = command.method
-        
-    
+            
+            
             if self.getAccessToken() != "" {
                 mutableURLRequest.setValue(self.getAccessToken(), forHTTPHeaderField: self.accessTokenKey)
             }
@@ -128,10 +95,10 @@ public class ClientBase {
             if self.getClientVersion() != "" {
                 mutableURLRequest.setValue(self.getClientVersion(), forHTTPHeaderField: self.clientVersionKey)
             }
-
+            
             
             let (m, _) = Alamofire.ParameterEncoding.URL.encode(mutableURLRequest,parameters:parameters)
-
+            
             var requestObject = Alamofire.request(m)
             
             let basicAuthInfo =  self.getBasicAuthInfo()
@@ -166,7 +133,43 @@ public class ClientBase {
                 onFinalize()
                 
             })
+            
 
+    }
+    
+    public func get(
+        command : Command,
+        parameters: [String: AnyObject]? = nil,
+        onSuccess : ( ResponseBase ) -> Void,
+        onCriticalError : ( ErrorType ) -> Void = {
+            ( e : ErrorType) in
+            print("onCriticalError")
+            print(e)
+        },
+        onError : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onError")
+            print(e.json)
+        },
+        onMaintenance : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onMaintenance")
+            print(e.json)
+        },
+        onUpgradeClient : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onUpgradeClient")
+            print(e.json)
+        },
+        onUpgradeData : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            print("onUpgradeData")
+            print(e.json)
+        },
+        onFinalize : () -> Void = {()in}
+        
+        )  {
+            self.execGet(command,parameters:parameters,onSuccess:onSuccess,onCriticalError:onCriticalError,onError:onError,onMaintenance:onMaintenance,onUpgradeClient:onUpgradeClient,onUpgradeData:onUpgradeData,onFinalize:onFinalize)
             
     }
     
