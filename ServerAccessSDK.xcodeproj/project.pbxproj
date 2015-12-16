@@ -13,7 +13,7 @@
 		A2EB1FBD1B6B23B800DBDA2C /* SDK.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EB1FBC1B6B23B800DBDA2C /* SDK.swift */; };
 		A2EB1FBF1B6B23C900DBDA2C /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EB1FBE1B6B23C900DBDA2C /* Response.swift */; };
 		A2EB1FC11B6B249800DBDA2C /* Alamofire-SwiftyJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2EB1FC01B6B249800DBDA2C /* Alamofire-SwiftyJson.swift */; };
-		B0758720F8BCBE97D76883A7 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 353D31FC43E681ECC3BE926F /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		B0758720F8BCBE97D76883A7 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 353D31FC43E681ECC3BE926F /* Pods.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

@@ -32,6 +32,7 @@ public class ResponseBase {
 public class ResponseAPIError : ResponseBase {
     
     var apiError : APIError = APIError.ERROR
+    var code  : String = ""
     
     public init(json:JSON){
         super.init()
@@ -42,6 +43,8 @@ public class ResponseAPIError : ResponseBase {
     public override func load(json:JSON) ->Void {
         self.json = json
         self.apiError = APIError(rawValue :json["error"].intValue)!
+        self.code = json["error_code"].stringValue
+        
     }
     
     
