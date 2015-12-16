@@ -65,13 +65,22 @@ public class ClientBase {
         return nil
     }
     
-    static func onDefaultError( e : ResponseAPIError ){
+    static func cbError( e : ResponseAPIError ){
         print(e.json)
     }
-    static func onCriticalError( e : ErrorType ){
+    static func cbCriticalError( e : ErrorType ){
         print(e)
     }
     
+    static func cbMaintenance( e : ResponseAPIError ){
+        print(e.json)
+    }
+    static func cbUpgradeClient( e : ResponseAPIError ){
+        print(e.json)
+    }
+    static func cbUpgradeData( e : ResponseAPIError ){
+        print(e.json)
+    }
     
     
     public func get(
@@ -80,11 +89,23 @@ public class ClientBase {
         onSuccess : ( ResponseBase ) -> Void,
         onError : ( ResponseAPIError ) -> Void = {
             ( e : ResponseAPIError ) in
-            ClientBase.onDefaultError(e)
+            ClientBase.cbError(e)
         },
         onCriticalError : ( ErrorType ) -> Void = {
             ( e : ErrorType) in
-            ClientBase.onCriticalError(e)
+            ClientBase.cbCriticalError(e)
+        },
+        onMaintenance : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            ClientBase.cbMaintenance(e)
+        },
+        onUpgradeClient : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            ClientBase.cbUpgradeClient(e)
+        },
+        onUpgradeData : ( ResponseAPIError ) -> Void = {
+            ( e : ResponseAPIError ) in
+            ClientBase.cbUpgradeData(e)
         },
         onFinalize : () -> Void = {()in}
         
@@ -125,8 +146,16 @@ public class ClientBase {
                     if apiError == APIError.NONE {
                         let res: ResponseBase = self.responseMaker(command,json:json)
                         onSuccess(res)
-                    }
-                    else {
+                    }else if apiError == APIError.CLIENT_MAINTENANCE {
+                        let res = ResponseAPIError(json: json)
+                        onMaintenance(res)
+                    }else if apiError == APIError.CLIENT_UPGRADE_VERSION {
+                        let res = ResponseAPIError(json: json)
+                        onUpgradeClient(res)
+                    }else if apiError == APIError.CLIENT_UPGRADE_DATA {
+                        let res = ResponseAPIError(json: json)
+                        onUpgradeData(res)
+                    } else {
                         let res = ResponseAPIError(json: json)
                         onError(res)
                     }
