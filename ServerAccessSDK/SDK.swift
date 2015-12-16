@@ -29,7 +29,7 @@ public class ClientBase {
     
     public let accessTokenKey   : String = "X-ACCESS-TOKEN"
     public let dataVersionKey   : String = "X-DATA-VERSION"
-    public let clientVersionKey : String = "X-CLIENT_VERSION"
+    public let clientVersionKey : String = "X-IOS-CLIENT-VERSION"
     
     public init(){}
     

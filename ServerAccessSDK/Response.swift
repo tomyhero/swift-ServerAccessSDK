@@ -31,8 +31,8 @@ public class ResponseBase {
 
 public class ResponseAPIError : ResponseBase {
     
-    var apiError : APIError = APIError.ERROR
-    var code  : String = ""
+    public var apiError : APIError = APIError.ERROR
+    public var code  : String = ""
     
     public init(json:JSON){
         super.init()
