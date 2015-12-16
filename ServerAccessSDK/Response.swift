@@ -15,7 +15,7 @@ public enum APIError : Int {
     case NONE  = 0
     case ERROR = 1
     case CLIENT_UPGRADE_VERSION = 2
-    case CLIENT_UPGRADE_MASTER = 3
+    case CLIENT_UPGRADE_DATA = 3
     case CLIENT_MAINTENANCE = 4
 }
 

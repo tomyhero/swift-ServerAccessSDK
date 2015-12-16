@@ -27,9 +27,9 @@ public class Command {
 
 public class ClientBase {
     
-    
-    
-    public let accessTokenKey : String = "X-ACCESS-TOKEN"
+    public let accessTokenKey   : String = "X-ACCESS-TOKEN"
+    public let dataVersionKey   : String = "X-DATA-VERSION"
+    public let clientVersionKey : String = "X-CLIENT_VERSION"
     
     public init(){}
     
@@ -42,6 +42,16 @@ public class ClientBase {
         preconditionFailure("This method must be overridden")
         
     }
+    
+    public func getDataVersion() -> String {
+        preconditionFailure("This method must be overridden")
+    }
+    
+    public func getClientVersion() -> String {
+        preconditionFailure("This method must be overridden")
+    }
+
+
     
     public func responseMaker(cmd:Command,json:JSON) -> ResponseBase {
         let res:ResponseBase = cmd.res
@@ -87,9 +97,17 @@ public class ClientBase {
         
     
             if self.getAccessToken() != "" {
-                
                 mutableURLRequest.setValue(self.getAccessToken(), forHTTPHeaderField: self.accessTokenKey)
             }
+            
+            if self.getDataVersion() != "" {
+                mutableURLRequest.setValue(self.getDataVersion(), forHTTPHeaderField: self.dataVersionKey)
+            }
+            
+            if self.getClientVersion() != "" {
+                mutableURLRequest.setValue(self.getClientVersion(), forHTTPHeaderField: self.clientVersionKey)
+            }
+
             
             let (m, _) = Alamofire.ParameterEncoding.URL.encode(mutableURLRequest,parameters:parameters)
 
@@ -99,6 +117,7 @@ public class ClientBase {
             if basicAuthInfo != nil {
                 requestObject = requestObject.authenticate( usingCredential: basicAuthInfo! )
             }
+            
             requestObject.responseSwiftyJSON({ (request, response, json, error) in
                 if(error == nil ){
                     let apiError = APIError(rawValue :json["error"].intValue)
