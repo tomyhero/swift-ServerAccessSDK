@@ -14,9 +14,9 @@ public class Command {
     
     public var path : String = ""
     var method : String = ""
-    var res : ResponseBase!
-    
-    public init(path : String,res : ResponseBase,method:String = Alamofire.Method.POST.rawValue ){
+    var res :  () -> ResponseBase
+
+    public init(path : String,res : () -> ResponseBase ,method:String = Alamofire.Method.POST.rawValue ){
         self.path = path
         self.method = method
         self.res = res
@@ -54,7 +54,7 @@ public class ClientBase {
 
     
     public func responseMaker(cmd:Command,json:JSON) -> ResponseBase {
-        let res:ResponseBase = cmd.res
+        let res:ResponseBase = cmd.res()
         res.load(json)
         return res
     }
