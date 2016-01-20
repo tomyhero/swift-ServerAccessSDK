@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name = 'ServerAccessSDK'
-s.version = '0.0.2'
+s.version = '0.0.3'
 s.license = 'MIT'
 s.summary = 'Server Access SDK'
 s.homepage = 'https://github.com/tomyhero/swift-ServerAccessSDK'
